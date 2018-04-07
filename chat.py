@@ -18,6 +18,15 @@ class KeyboardThread(threading.Thread):
     def parse_input(self,input):
         our_queue.put(input)
         
+        
+class ListeningThread(threading.Thread,our_socket):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.name = 'ListeningThread'
+        self.socket = our_socket
+    def run(self):
+        
+        
 def main():
     thread_pool =[KeyboardThread,SendingThread,ListeningThread]
     for t in thread_pool:
