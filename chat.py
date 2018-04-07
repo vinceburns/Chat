@@ -1,7 +1,8 @@
 import threading
-import queue
+import Queue
+import socket
 our_queue = Queue.Queue()
-
+addr =192.168.0.105
 class KeyboardThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
@@ -25,7 +26,13 @@ class ListeningThread(threading.Thread,our_socket):
         self.name = 'ListeningThread'
         self.socket = our_socket
     def run(self):
-        
+        data,recv_addr = self.socket.recvfrom(1024)
+        #Limitation. only 1024 byte buffer. Wonder if we could do more? Never tried it
+        """Sudo code for later?
+        if addr !in self.future_dick:
+            add it
+        """
+        print "[%s]:%s" % (str(recv_addr),data)
         
 def main():
     UDP_PORT = raw_input("Please enter port that you have forwarding set up on: ")
