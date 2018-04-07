@@ -20,6 +20,10 @@ class KeyboardThread(threading.Thread):
         
 def main():
     thread_pool =[KeyboardThread,SendingThread,ListeningThread]
+    for t in thread_pool:
+        t.start()
     while True:
         for t in thread_pool:
-            t.start()
+            if not t.is_alive():
+                print "%s Thread has died ending" % (t.name) 
+            
