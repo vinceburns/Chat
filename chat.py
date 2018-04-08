@@ -26,13 +26,14 @@ class ListeningThread(threading.Thread):
         self.name = 'ListeningThread'
         self.s = our_socket
     def run(self):
-        data,recv_addr = self.s.recvfrom(1024)
-        #Limitation. only 1024 byte buffer. Wonder if we could do more? Never tried it
-        """Sudo code for later?
-        if addr !in self.future_dick:
-            add it
-        """
-        print "[%s]:%s" % (str(recv_addr),data)
+        while True:
+            data,recv_addr = self.s.recvfrom(1024)
+            #Limitation. only 1024 byte buffer. Wonder if we could do more? Never tried it
+            """Sudo code for later?
+            if addr !in self.future_dick:
+                add it
+            """
+            print "[%s]:%s" % (str(recv_addr),data)
 		
 		
 class SendingThread(threading.Thread):
