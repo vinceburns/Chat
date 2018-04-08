@@ -2,7 +2,7 @@ import threading
 import Queue
 import socket
 our_queue = Queue.Queue()
-addr =192.168.0.105
+addr = "192.168.0.105"
 class KeyboardThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
@@ -20,8 +20,8 @@ class KeyboardThread(threading.Thread):
         our_queue.put(input)
         
         
-class ListeningThread(threading.Thread,our_socket):
-    def __init__(self):
+class ListeningThread(threading.Thread):
+    def __init__(self, our_socket):
         threading.Thread.__init__(self)
         self.name = 'ListeningThread'
         self.socket = our_socket
@@ -33,10 +33,24 @@ class ListeningThread(threading.Thread,our_socket):
             add it
         """
         print "[%s]:%s" % (str(recv_addr),data)
+		
+		
+class SendingThread(threading.Thread):
+    def __init__(self, our_socket):
+        threading.Thread.__init__(self)
+        self.name = 'SendingThread'
+        self.socket = our_socket
+    def run(self):
+        while True:
+            job = our_queue.get()
+            self.our_socket.sendto(addr,job)
+            our_queue.task_done()
+            
+		
         
 def main():
     UDP_PORT = raw_input("Please enter port that you have forwarding set up on: ")
-        try:
+    try:
         our_sock = socket.socket(socket.AF_INET,
                          socket.SOCK_DGRAM)
         #taking it as raw should implement as an argument.
